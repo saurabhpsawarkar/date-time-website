@@ -25,4 +25,7 @@ npm install
 npm install -g pm2
 pm2 start app.js --name my-app
 pm2 save
-pm2 startup | tail -n 1 | bash
+sudo env PATH=$PATH:/home/ec2-user/.nvm/versions/node/v18.x/bin \
+     PM2_HOME=/home/ec2-user/.pm2 \
+     pm2 startup systemd -u ec2-user --hp /home/ec2-user
+
