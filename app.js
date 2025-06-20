@@ -7,6 +7,7 @@ app.get('/', (req, res) => {
   res.send(`<h1>Today is ${now.toDateString()}</h1><h2>Time: ${now.toLocaleTimeString()}</h2>`);
 });
 
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+app.listen(3000, () => {
+  console.log("Server running on port 3000");
 });
+
