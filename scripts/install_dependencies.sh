@@ -1,21 +1,23 @@
 #!/bin/bash
 
-# Exit immediately if a command exits with a non-zero status
-set -e
+set -e  # Exit immediately if any command fails
+set -x  # Echo commands for debugging
 
-# Log commands as they are executed
-set -x
+# Install Node.js
+if curl -sL https://rpm.nodesource.com/setup_18.x | sudo bash - && sudo yum install -y nodejs; then
+    echo "✅ Node.js installed successfully."
 
-# Install Node.js (v18)
-curl -sL https://rpm.nodesource.com/setup_18.x | sudo bash -
-sudo yum install -y nodejs
+    # Ensure the app directory exists
+    mkdir -p /home/ec2-user/app
+    cd /home/ec2-user/app
 
-# Create app directory if it doesn't exist
-mkdir -p /home/ec2-user/app
-cd /home/ec2-user/app
+    # Initialize package.json if it doesn't exist
+    [ ! -f package.json ] && npm init -y
 
-# Initialize package.json if not already present
-[ ! -f package.json ] && npm init -y
+    # Install Express
+    npm install express
 
-# Install Express
-npm install express
+else
+    echo "❌ Failed to install Node.js. Aborting npm setup."
+    exit 1
+fi
