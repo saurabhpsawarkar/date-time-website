@@ -35,5 +35,6 @@ fi
 pm2 save
 
 # Enable startup on reboot
-pm2 startup systemd -u ec2-user --hp /home/ec2-user | tail -n 1 | bash
+eval $(pm2 startup systemd -u ec2-user --hp /home/ec2-user)
+
 
