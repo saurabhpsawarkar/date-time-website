@@ -1,23 +1,29 @@
 #!/bin/bash
+set -e
+set -x
 
-set -e  # Exit immediately if any command fails
-set -x  # Echo commands for debugging
+# Install Node.js and npm explicitly
+curl -fsSL https://rpm.nodesource.com/setup_18.x -o nodesource_setup.sh
+sudo bash nodesource_setup.sh
+sudo yum install -y nodejs
 
-# Install Node.js
-if curl -sL https://rpm.nodesource.com/setup_18.x | sudo bash - && sudo yum install -y nodejs; then
-    echo "✅ Node.js installed successfully."
+# Reload shell to ensure npm is in PATH
+source ~/.bashrc || true
+source ~/.profile || true
 
-    # Ensure the app directory exists
+# Confirm installation
+which node
+which npm
+node -v
+npm -v
+
+# Proceed only if npm is available
+if command -v npm >/dev/null 2>&1; then
     mkdir -p /home/ec2-user/app
     cd /home/ec2-user/app
-
-    # Initialize package.json if it doesn't exist
     [ ! -f package.json ] && npm init -y
-
-    # Install Express
     npm install express
-
 else
-    echo "❌ Failed to install Node.js. Aborting npm setup."
+    echo "❌ npm still not found. Aborting."
     exit 1
 fi
