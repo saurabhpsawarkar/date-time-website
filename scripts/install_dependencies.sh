@@ -2,26 +2,30 @@
 set -e
 set -x
 
-# Unset NVM_DIR to avoid premature reference
-unset NVM_DIR
-
-# Install nvm
+# Install NVM (Node Version Manager) from scratch
+export NVM_DIR="/home/ec2-user/.nvm"
+rm -rf "$NVM_DIR"
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 
-# Load nvm into current shell
-export NVM_DIR="$HOME/.nvm"
+# Load NVM
 source "$NVM_DIR/nvm.sh"
 
-# Install Node.js (includes npm)
+# Install Node.js and use it
 nvm install 18
 nvm use 18
 
-# Confirm installation
-node -v
-npm -v
+# Set default for future shells
+nvm alias default 18
 
-# Set up app
-mkdir -p /home/ec2-user/app
+# Go to app directory
 cd /home/ec2-user/app
+
+# Initialize and install dependencies
 [ ! -f package.json ] && npm init -y
-npm install express
+npm install
+
+# Optional: install and use PM2 for long-term process management
+npm install -g pm2
+pm2 start app.js --name my-app
+pm2 save
+pm2 startup | tail -n 1 | bash
