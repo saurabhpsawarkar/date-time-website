@@ -34,7 +34,9 @@ fi
 # Save process list
 pm2 save
 
-# Enable startup on reboot
-eval $(pm2 startup systemd -u ec2-user --hp /home/ec2-user)
+sudo env PATH=$PATH:/home/ec2-user/.nvm/versions/node/v18.*/bin \
+     PM2_HOME=/home/ec2-user/.pm2 \
+     pm2 startup systemd -u ec2-user --hp /home/ec2-user
+
 
 
