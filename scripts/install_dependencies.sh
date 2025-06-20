@@ -2,11 +2,14 @@
 set -e
 set -x
 
-# Install nvm (Node Version Manager)
-export NVM_DIR="/home/ec2-user/.nvm"
+# Unset NVM_DIR to avoid premature reference
+unset NVM_DIR
+
+# Install nvm
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 
 # Load nvm into current shell
+export NVM_DIR="$HOME/.nvm"
 source "$NVM_DIR/nvm.sh"
 
 # Install Node.js (includes npm)
