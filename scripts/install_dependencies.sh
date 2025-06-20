@@ -2,6 +2,9 @@
 set -e
 set -x
 
+# Set timezone to Asia/Kolkata
+sudo timedatectl set-timezone Asia/Kolkata
+
 # Install NVM without pre-setting NVM_DIR
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 
