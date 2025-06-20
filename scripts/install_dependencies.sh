@@ -23,9 +23,17 @@ npm install
 
 # Optional: Start app with PM2
 npm install -g pm2
-pm2 start app.js --name my-app
+export HOME=/home/ec2-user
+export PM2_HOME=/home/ec2-user/.pm2
+
+# Start app only if it's not running
+if ! pm2 describe my-app > /dev/null; then
+    pm2 start app.js --name my-app
+fi
+
+# Save process list
 pm2 save
-sudo env PATH=$PATH:/home/ec2-user/.nvm/versions/node/v18.x/bin \
-     PM2_HOME=/home/ec2-user/.pm2 \
-     pm2 startup systemd -u ec2-user --hp /home/ec2-user
+
+# Enable startup on reboot
+pm2 startup systemd -u ec2-user --hp /home/ec2-user | tail -n 1 | bash
 
