@@ -6,4 +6,5 @@ sudo yum install -y nodejs
 
 # Initialize and install express
 cd /home/ec2-user/app
+npm init -y
 npm install express
