@@ -2,19 +2,23 @@
 set -e
 set -x
 
-# Install Node.js
-curl -sL https://rpm.nodesource.com/setup_18.x | sudo bash -
-sudo yum install -y nodejs
+# Install nvm (Node Version Manager)
+export NVM_DIR="/home/ec2-user/.nvm"
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 
-# Use full path to npm
-NPM_BIN=$(which npm)
+# Load nvm into current shell
+source "$NVM_DIR/nvm.sh"
 
-if [ -x "$NPM_BIN" ]; then
-    mkdir -p /home/ec2-user/app
-    cd /home/ec2-user/app
-    [ ! -f package.json ] && "$NPM_BIN" init -y
-    "$NPM_BIN" install express
-else
-    echo "❌ npm not found even after installation."
-    exit 1
-fi
+# Install Node.js (includes npm)
+nvm install 18
+nvm use 18
+
+# Confirm installation
+node -v
+npm -v
+
+# Set up app
+mkdir -p /home/ec2-user/app
+cd /home/ec2-user/app
+[ ! -f package.json ] && npm init -y
+npm install express
